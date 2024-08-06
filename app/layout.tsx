@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/navbar/Navbar";
 import ClientOnly from "./components/ClientOnly";
 import Modal from "./components/modals/Modal";
+import RegisterModal from "./components/modals/RegisterModal";
 
 const inter = Inter({ subsets: ["latin"] });
 const font = Nunito({subsets:["latin"]})
@@ -21,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={font.className}>
         <ClientOnly>
-          <Modal actionLabel="Submit" isOpen title="Login "/>
+          <RegisterModal />
         <Navbar/>
         </ClientOnly>
         {children}
