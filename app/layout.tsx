@@ -8,9 +8,10 @@ import RegisterModal from "./components/modals/RegisterModal";
 import ToastProvider from "./providers/ToastProvider";
 import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
+import RentModal from "./components/modals/RentModal";
 
 const inter = Inter({ subsets: ["latin"] });
-const font = Nunito({subsets:["latin"]})
+const font = Nunito({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Airbnb",
   description: "Airbnb Clone",
@@ -21,7 +22,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const currentUser=await getCurrentUser();
+  const currentUser = await getCurrentUser();
   return (
     <html lang="en">
       <body className={font.className}>
@@ -29,11 +30,11 @@ export default async function RootLayout({
           <ToastProvider />
           <RegisterModal />
           <LoginModal />
-
-        <Navbar currentUser={currentUser}/>
+          <RentModal />
+          <Navbar currentUser={currentUser} />
         </ClientOnly>
         {children}
-        </body>
+      </body>
     </html>
   );
 }
