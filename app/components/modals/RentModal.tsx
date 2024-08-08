@@ -43,23 +43,23 @@ const RentModal = () => {
     },
   });
 
-  const category = watch('category');
-  const setCustomValue = (id:string, value:any)=>{
-    setValue(id,value,{
-        shouldDirty:true,
-        shouldTouch:true,
-        shouldValidate:true
-    })
-  }
+  const category = watch("category");
+  const location = watch("location");
+  const setCustomValue = (id: string, value: any) => {
+    setValue(id, value, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
+  };
 
   const onBack = () => {
     setStep((value) => value - 1);
   };
   const onNext = () => {
-    if(step<5){
+    if (step < 5) {
       setStep((value) => value + 1);
     }
-    
   };
   const actionLabel = useMemo(() => {
     if (step === STEPS.PRICE) {
@@ -73,7 +73,7 @@ const RentModal = () => {
     }
     return "Back";
   }, []);
-  console.log(step,actionLabel, secondaryLabel)
+
   let bodyContent = (
     <div className="flex flex-col  gap-8">
       <Heading
@@ -84,8 +84,10 @@ const RentModal = () => {
         {categories.map((item) => (
           <div key={item.label} className="col-span-1">
             <CategoryInput
-              onClick={(category) => {setCustomValue('category', category)}}
-              selected={category===item.label}
+              onClick={(category) => {
+                setCustomValue("category", category);
+              }}
+              selected={category === item.label}
               label={item.label}
               icon={item.icon}
             />
@@ -94,16 +96,19 @@ const RentModal = () => {
       </div>
     </div>
   );
-  if(step===STEPS.LOCATION){
-    bodyContent=(
+  if (step === STEPS.LOCATION) {
+    bodyContent = (
       <div className="flex flex-col p-8">
-        <Heading 
-        title="Where is your place located"
-        subtitle="Help guests find you"
+        <Heading
+          title="Where is your place located"
+          subtitle="Help guests find you"
         />
-        <CountrySelect />
+        <CountrySelect
+          value={location}
+          onChange={(value) => setCustomValue("location", value)}
+        />
       </div>
-    )
+    );
   }
   return (
     <Modal
