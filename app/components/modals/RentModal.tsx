@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import Heading from "../Heading";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
+import CountrySelect from "../inputs/CountrySelect";
 
 enum STEPS {
   CATEGORY = 0,
@@ -50,11 +51,15 @@ const RentModal = () => {
         shouldValidate:true
     })
   }
+
   const onBack = () => {
     setStep((value) => value - 1);
   };
   const onNext = () => {
-    setStep((value) => value + 1);
+    if(step<5){
+      setStep((value) => value + 1);
+    }
+    
   };
   const actionLabel = useMemo(() => {
     if (step === STEPS.PRICE) {
@@ -68,7 +73,7 @@ const RentModal = () => {
     }
     return "Back";
   }, []);
-
+  console.log(step,actionLabel, secondaryLabel)
   let bodyContent = (
     <div className="flex flex-col  gap-8">
       <Heading
@@ -79,8 +84,8 @@ const RentModal = () => {
         {categories.map((item) => (
           <div key={item.label} className="col-span-1">
             <CategoryInput
-              onClick={() => {}}
-              selected={false}
+              onClick={(category) => {setCustomValue('category', category)}}
+              selected={category===item.label}
               label={item.label}
               icon={item.icon}
             />
@@ -89,12 +94,23 @@ const RentModal = () => {
       </div>
     </div>
   );
+  if(step===STEPS.LOCATION){
+    bodyContent=(
+      <div className="flex flex-col p-8">
+        <Heading 
+        title="Where is your place located"
+        subtitle="Help guests find you"
+        />
+        <CountrySelect />
+      </div>
+    )
+  }
   return (
     <Modal
       isOpen={rentModal.isOpen}
       title="Airbnb your home!"
       onClose={rentModal.onClose}
-      onSubmit={rentModal.onClose}
+      onSubmit={onNext}
       actionLabel={actionLabel}
       secondaryLabel={secondaryLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
