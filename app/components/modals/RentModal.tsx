@@ -97,7 +97,6 @@ const RentModal = () => {
       reset();
       setStep(STEPS.CATEGORY);
       rentModal.onClose();
-      console.log(data)
     })
     .catch(()=>{
       toast.error('Something went wrong!');
@@ -118,8 +117,6 @@ const RentModal = () => {
     }
     return "Back";
   }, [step]);
-  console.log(step);
-
 
   //steps 
   let bodyContent = (
@@ -220,7 +217,7 @@ const RentModal = () => {
         />
         <hr />
         <Input
-          id="descripton"
+          id="description"
           label="Description"
           disabled={isLoading}
           register={register}
