@@ -15,13 +15,21 @@ interface ImageUploadProps {
 const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
   const handleUpload = useCallback(
     (result: any) => {
-      onChange(result.info.secure_url);
+      console.log("Upload result:", result); // Log the entire result
+      const secureUrl = result?.info?.secure_url;
+      if (secureUrl) {
+        console.log("Secure URL:", secureUrl);
+        onChange(secureUrl);
+      } else {
+        console.log("No secure URL found in result");
+      }
     },
     [onChange]
   );
+
   return (
     <CldUploadWidget
-      onUpload={handleUpload}
+      onSuccess={handleUpload}
       uploadPreset="airbnb homes"
       options={{
         maxFiles: 1,
@@ -30,7 +38,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
       {({ open }) => {
         return (
           <div
-            onClick={() => open?.()}
+            onClick={() => {
+              console.log("opening widget");
+              open?.();
+            }}
             className="relative cursor-pointer hover:opacity-70 transition 
                      border-dashed border-2 p-20 border-neutral-300 flex flex-col 
                      justify-center items-center gap-4 text-neutral-600"

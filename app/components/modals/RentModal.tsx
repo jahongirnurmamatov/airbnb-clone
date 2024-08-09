@@ -54,6 +54,7 @@ const RentModal = () => {
   const bathroomCount = watch("bathroomCount");
   const imageSrc = watch("imageSrc");
 
+
   const Map = useMemo(()=>dynamic(()=>import('../Map'),{
     ssr:false
   }),[location]);
@@ -79,13 +80,14 @@ const RentModal = () => {
       return "Create";
     }
     return "Next";
-  }, []);
+  }, [step]);
   const secondaryLabel = useMemo(() => {
     if (step === STEPS.CATEGORY) {
       return undefined;
     }
     return "Back";
-  }, []);
+  }, [step]);
+  console.log(step)
 
   let bodyContent = (
     <div className="flex flex-col  gap-8">
