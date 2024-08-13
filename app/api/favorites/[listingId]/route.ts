@@ -39,11 +39,12 @@ export async function DELETE(
     if(!currentUser){
         return NextResponse.error();
     }
-    const listingId = params;
+    const {listingId} = params;
     if(!listingId || typeof listingId !=='string'){
         throw new Error('invalid id');
     }
     let favoriteIds = [...(currentUser.favoriteIds)||[]];
+    console.log(favoriteIds)
     favoriteIds = favoriteIds.filter((id)=>id!==listingId);
     const user = await prisma.user.update({
         where:{

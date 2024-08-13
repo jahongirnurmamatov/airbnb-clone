@@ -22,8 +22,8 @@ const useFavorite =({
     const hasFavorited = useMemo(()=>{
         const list = currentUser?.favoriteIds||[];
         return list.includes(listingId);
-    },[currentUser]);
-
+    },[currentUser,listingId]);
+ 
     const toggleFavorite = useCallback(async(
         e:React.MouseEvent<HTMLDivElement>
     )=>{
@@ -36,7 +36,7 @@ const useFavorite =({
             if(hasFavorited){
                 request=()=>axios.delete(`/api/favorites/${listingId}`);
             }else{
-                request = ()=> axios.post(`/api/favorites.${listingId}`);
+                request = ()=> axios.post(`/api/favorites/${listingId}`);
             }
             await request();
             router.refresh();
