@@ -1,8 +1,9 @@
 "use client";
 
+import { Range } from "react-date-range";
 import Container from "@/app/components/Container";
 import { categories } from "@/app/components/navbar/Categories";
-import { SafeListing, SafeUser } from "@/app/types";
+import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import { Reservation } from "@prisma/client";
 import { list } from "postcss";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -16,6 +17,7 @@ import toast from "react-hot-toast";
 import { differenceInCalendarDays } from "date-fns/fp";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 
+
 const initialDateRange = {
   startDate: new Date(),
   endDate: new Date(),
@@ -23,7 +25,7 @@ const initialDateRange = {
 };
 
 interface ListingClientProps {
-  reservations?: Reservation[];
+  reservations?: SafeReservation[];
   listing: SafeListing & {
     user: SafeUser;
   };
@@ -51,7 +53,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
-  const [dateRange, setDateRange] = useState(initialDateRange);
+  const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
@@ -63,7 +65,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
-        listinId: listing?.id,
+        listingId: listing?.id,
       })
       .then(() => {
         toast.success("Listing reserved");
