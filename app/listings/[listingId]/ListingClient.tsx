@@ -4,8 +4,6 @@ import { Range } from "react-date-range";
 import Container from "@/app/components/Container";
 import { categories } from "@/app/components/navbar/Categories";
 import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
-import { Reservation } from "@prisma/client";
-import { list } from "postcss";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ListingHead from "./ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";

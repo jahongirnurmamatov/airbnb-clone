@@ -65,8 +65,6 @@ export default async function getListings(params: IListingsParams) {
         },
       };
     }
-    
-    console.log(JSON.stringify(query, null, 2));
 
     const listings = await prisma.listing.findMany({
       where: query,
