@@ -6,18 +6,28 @@ import { useCallback, useState } from "react";
 import MenuItem from "./MenuItem";
 import userRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import {signOut} from 'next-auth/react'
+import useRentModal from "@/app/hooks/useRentModal";
+import { signOut } from "next-auth/react";
 import { SafeUser } from "@/app/types";
-interface UserMenuProps{
-  currentUser? : SafeUser | null
+import { useRouter } from "next/navigation";
+interface UserMenuProps {
+  currentUser?: SafeUser | null;
 }
 
-const UserMenu:React.FC<UserMenuProps> = ({
-  currentUser
-}) => {
-  const registerModal=userRegisterModal();
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+  const registerModal = userRegisterModal();
   const loginModal = useLoginModal();
+  const rentModal = useRentModal();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+    rentModal.onOpen();
+  }, [currentUser,rentModal, loginModal]);
+
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
@@ -27,7 +37,7 @@ const UserMenu:React.FC<UserMenuProps> = ({
         <div
           className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full 
                 hover:bg-neutral-100 transition cursor-pointer"
-          onClick={() => {}}
+          onClick={onRent}
         >
           Airbnb you home
         </div>
@@ -38,7 +48,7 @@ const UserMenu:React.FC<UserMenuProps> = ({
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar  src={currentUser?.image}/>
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
@@ -47,26 +57,29 @@ const UserMenu:React.FC<UserMenuProps> = ({
           className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4
          bg-white overflow-hidden right-0 top-12 text-sm"
         >
-            <div className="flex flex-col cursor-pointer">
-              {currentUser ? (
-                <>
-                <MenuItem onClick={()=>{}} label="My trips"/>
-                <MenuItem onClick={()=>{}} label="My favorites"/>
-                <MenuItem onClick={()=>{}} label="My reservations"/>
-                <MenuItem onClick={()=>{}} label="My properties"/>
-                <MenuItem onClick={()=>{}} label="Airbnb my home"/>
+          <div className="flex flex-col cursor-pointer">
+            {currentUser ? (
+              <>
+                <MenuItem onClick={() => {router.push('/trips')}} label="My trips" />
+                <MenuItem onClick={() => {}} label="My favorites" />
+                <MenuItem onClick={() => {}} label="My reservations" />
+                <MenuItem onClick={() => {}} label="My properties" />
+                <MenuItem onClick={rentModal.onOpen} label="Airbnb my home" />
                 <hr />
-                <MenuItem onClick={()=>{signOut()}} label="Log out"/>
-
-                </>
-              ):(
-                  <>
-                  <MenuItem onClick={loginModal.onOpen} label="Login"/>
-                  <MenuItem onClick={registerModal.onOpen} label="Sign up"/>
-                  </>
-              )}
-                
-            </div>
+                <MenuItem
+                  onClick={() => {
+                    signOut();
+                  }}
+                  label="Log out"
+                />
+              </>
+            ) : (
+              <>
+                <MenuItem onClick={loginModal.onOpen} label="Login" />
+                <MenuItem onClick={registerModal.onOpen} label="Sign up" />
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>
