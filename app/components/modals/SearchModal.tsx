@@ -1,18 +1,18 @@
 "use client";
-
 import qs from "query-string";
 import useSearchModal from "@/app/hooks/useSearchModal";
-export const dynamic = 'force-dynamic';
 import Modal from "./Modal";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { Range } from "react-date-range";
-import dynamicImport  from "next/dynamic";
+import dynamicImport from "next/dynamic";  // Renamed import
 import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
 import { formatISO } from "date-fns";
 import Heading from "../Heading";
 import Calendar from "../inputs/Calendar";
 import Counter from "../inputs/Counter";
+
+export const dynamic = 'force-dynamic';  // Forced dynamic rendering
 
 enum STEPS {
   LOCATION = 0,
@@ -38,7 +38,7 @@ const SearchModal = () => {
 
   const Map = useMemo(
     () =>
-      dynamicImport (() => import("../Map"), {
+      dynamicImport(() => import("../Map"), {
         ssr: false,
       }),
     [location]
